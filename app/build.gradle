@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile project(':jokelib')
     compile project(":androidjokelibrary")
+    compile project(path: ':jokeProvider', configuration: 'android-endpoints')
 }
