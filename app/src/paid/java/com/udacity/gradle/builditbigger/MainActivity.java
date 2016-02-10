@@ -18,8 +18,6 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String JOKE_PROVIDER_ROOT_URL = "https://jokeprovider-1200.appspot.com/_ah/api/";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
