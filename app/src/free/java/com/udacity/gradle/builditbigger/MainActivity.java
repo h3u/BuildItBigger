@@ -21,6 +21,8 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MAIN_FRAGMENT = "main_fragment";
+
     InterstitialAd mInterstitialAd;
 
     @Override
@@ -28,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeInterstitial();
+
+        MainActivityFreeFragment fragment = new MainActivityFreeFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment, fragment, MAIN_FRAGMENT)
+                .commit();
     }
 
 
@@ -57,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+        MainActivityFreeFragment fragment = (MainActivityFreeFragment) getSupportFragmentManager()
+                .findFragmentByTag(MAIN_FRAGMENT);
+        fragment.enableProgressBar();
     }
 
     class JokeApiEndpointAsyncTask extends AsyncTask<Context, Void, String> {
@@ -101,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         requestNewInterstitial();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        MainActivityFreeFragment fragment = (MainActivityFreeFragment) getSupportFragmentManager()
+                .findFragmentByTag(MAIN_FRAGMENT);
+        fragment.disableProgressBar();
     }
 
     private void requestNewInterstitial() {

@@ -16,7 +16,6 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,11 +36,6 @@ public class MainActivityTest {
     @Test
     public void buttonHasText() {
         onView(withId(R.id.buttonJoke)).check(matches(withText(R.string.button_text)));
-    }
-
-    @Test
-    public void adMobIsDisplayed() {
-        onView(withId(R.id.adView)).check(matches(isDisplayed()));
     }
 
     @Test

@@ -18,10 +18,17 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MAIN_FRAGMENT = "main_fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MainActivityFragment fragment = new MainActivityFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment, fragment, MAIN_FRAGMENT)
+                .commit();
     }
 
 
@@ -48,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        MainActivityFragment fragment = (MainActivityFragment) getSupportFragmentManager()
+                .findFragmentByTag(MAIN_FRAGMENT);
+        fragment.enableProgressBar();
+
         new JokeApiEndpointAsyncTask().execute(this);
     }
 
@@ -79,5 +90,14 @@ public class MainActivity extends AppCompatActivity {
             tellJoke.putExtra(JokeActivity.INTENT_EXTRA_JOKE, result);
             startActivity(tellJoke);
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        MainActivityFragment fragment = (MainActivityFragment) getSupportFragmentManager()
+                .findFragmentByTag(MAIN_FRAGMENT);
+        fragment.disableProgressBar();
     }
 }

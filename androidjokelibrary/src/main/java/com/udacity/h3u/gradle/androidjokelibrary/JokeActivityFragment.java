@@ -14,6 +14,7 @@ import android.widget.TextView;
 public class JokeActivityFragment extends Fragment {
 
     private static final String ARG_JOKE = "arg_joke";
+    private static final String KEY_JOKE = "key_joke";
 
     private String mParamJoke;
 
@@ -40,6 +41,8 @@ public class JokeActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParamJoke = getArguments().getString(ARG_JOKE);
+        } else if (savedInstanceState != null) {
+            mParamJoke = savedInstanceState.getString(KEY_JOKE);
         }
     }
 
@@ -51,5 +54,11 @@ public class JokeActivityFragment extends Fragment {
         TextView joke = (TextView) rootView.findViewById(R.id.text_view_joke);
         joke.setText(mParamJoke);
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY_JOKE, mParamJoke);
     }
 }
