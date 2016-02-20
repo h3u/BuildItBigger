@@ -4,14 +4,22 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.udacity.h3u.gradle.androidjokelibrary.JokeActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 
 /**
@@ -19,13 +27,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityTest {
+public class MainActivityPaidTest {
     @Rule
     public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(
             MainActivity.class);
 
     @Test
-    public void buttonHasText() {
-        onView(withId(R.id.buttonJoke)).check(matches(withText(R.string.button_text)));
+    public void startJokeActivityWithNonEmptyStringExtra() {
+        onView(withId(R.id.buttonJoke)).perform(click());
+
+        intended(hasExtras(hasEntry(
+                equalTo(JokeActivity.INTENT_EXTRA_JOKE),
+                both(not(isEmptyOrNullString())).and(not(containsString("ECONNREFUSED")))
+        )));
     }
 }

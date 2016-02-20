@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:2.0.0-beta5'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,5 +15,23 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+    }
+}
+
+task automatedConnectedAndroidTest {
+    dependsOn = [
+            "startAppEngine",
+            ":app:connectedAndroidTest",
+            ":jokeProvider:appengineStop",
+    ]
+    description = 'Connected android tests with running local provider'
+    doLast {
+        println('finished automated tests with app engine provider')
+    }
+}
+
+task startAppEngine (dependsOn: ":jokeProvider:appengineRun") {
+    project(":jokeProvider").afterEvaluate { provider ->
+        provider.extensions.appengine.daemon = true
     }
 }

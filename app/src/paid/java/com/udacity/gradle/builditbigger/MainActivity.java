@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +13,14 @@ import android.view.View;
 import com.example.h3u.myapplication.backend.jokeApi.JokeApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.h3u.gradle.androidjokelibrary.JokeActivity;
 
 import java.io.IOException;
+
+import static com.udacity.gradle.builditbigger.BuildConfig.API_BASE_URL;
+import static com.udacity.gradle.builditbigger.BuildConfig.API_COMPRESSED;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,7 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
             if (jokeApiService == null) {
                 JokeApi.Builder builder = new JokeApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(context.getString(R.string.joke_provider_root_url));
+                        .setRootUrl(API_BASE_URL);
+
+                if (!API_COMPRESSED) {
+                    builder.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                        @Override
+                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                        }
+                    });
+                }
                 jokeApiService = builder.build();
             }
 

@@ -13,7 +13,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "API_BASE_URL", "\"http://10.0.2.2:8080/_ah/api/\""
+            buildConfigField "Boolean", "API_COMPRESSED", "false"
+        }
         release {
+            buildConfigField "String", "API_BASE_URL", "\"https://jokeprovider-1200.appspot.com/_ah/api/\""
+            buildConfigField "Boolean", "API_COMPRESSED", "true"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
